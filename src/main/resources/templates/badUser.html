@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springseecurity5">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{label.badUser.title}">bad user</title>
+</head>
+<body>
+    <h1 th:text="${message}">error</h1><br>
+    <a th:href="@{registration}" th:text="#{label.form.loginSignUp}">signup</a>
+    <div th:if="${expired}">
+        <h1 th:text="#{label.form.resendRegistrationToken}">resend</h1>
+        <button onclick="resendToken()" th:text="#{label.form.resendRegistrationToken}">resend</button>
+
+        <script src="jquery.min.js"></script>
+        <script type="text/javascript">
+            var serverContext = [[@{/}]]
+            function resendToken(){
+                $.get(serverContext + "resendToken?token=" + token,
+                (data) => {
+                    windows.location.href = serverContext + "login?message=" + data.message;
+                })
+                .fail((data) => {
+                    if(data.responseJSON.error.indexOf("MailError">-1){
+                        windows.location.href = serverContext + "emailError";
+                    }
+                    else{
+                        windows.location.href = serverContext + "login?message=" + data.responseJSON.message;
+                 });
+             }
+        </script>
+    </div>
+</body>
+</html>

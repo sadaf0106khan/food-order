@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springseecurity5"
+      xmlns:background-image="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- Favicon icon -->
+    <title>Admin</title>
+    <!-- Custom CSS -->
+    <link href="/dist/css/style.css" rel="stylesheet">
+    <link href="/dist/css/popup.css" rel="stylesheet">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+    <!-- Pop-up form related stuff -->
+</head>
+
+<body class="skin-default-dark fixed-layout">
+    <!-- ============================================================== -->
+    <!-- Preloader - style you can find in spinners.css -->
+    <!-- ============================================================== -->
+    <div class="preloader">
+        <div class="loader">
+            <div class="loader__figure"></div>
+            <p class="loader__label">Elegant admin</p>
+        </div>
+    </div>
+    <!-- ============================================================== -->
+    <!-- Main wrapper - style you can find in pages.scss -->
+    <!-- ============================================================== -->
+    <div id="main-wrapper">
+        <!-- ============================================================== -->
+        <!-- Topbar header - style you can find in pages.scss -->
+        <!-- ============================================================== -->
+        <header class="topbar">
+            <nav class="navbar top-navbar navbar-expand-md navbar-dark justify-content-between">
+                <!-- ============================================================== -->
+                <!-- Logo -->
+                <!-- ============================================================== -->
+                <div class="navbar-header">
+                    <a class="navbar-brand text-dark" th:href="@{/}">
+                         <i class="fa fa-user-o mr-2"></i> Feliciano
+                    </a>
+                </div>
+                <!-- ============================================================== -->
+                <!-- End Logo -->
+                <!-- ============================================================== -->
+                <ul class="navbar-nav my-lg-0">
+                    <!-- ============================================================== -->
+                    <!-- User profile and search -->
+                    <!-- ============================================================== -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark" th:href="@{/logout}" >Logout<i class="fa fa-sign-out ml-2"></i></a>
+                    </li>
+                    <!-- ============================================================== -->
+                    <!-- User profile and search -->
+                    <!-- ============================================================== -->
+                </ul>
+            </nav>
+        </header>
+        <!-- ============================================================== -->
+        <!-- End Topbar header -->
+        <!-- ============================================================== -->
+        <!-- ============================================================== -->
+        <!-- Left Sidebar - style you can find in sidebar.scss  -->
+        <!-- ============================================================== -->
+        <aside class="left-sidebar">
+            <div class="d-flex no-block nav-text-box align-items-center">
+                <a class="waves-effect waves-dark ml-auto hidden-sm-down" href="javascript:void(0)"><i class="ti-menu"></i></a>
+                <a class="nav-toggler waves-effect waves-dark ml-auto hidden-sm-up" href="javascript:void(0)"><i class="ti-menu ti-close"></i></a>
+            </div>
+            <!-- Sidebar scroll-->
+            <div class="scroll-sidebar">
+                <!-- Sidebar navigation-->
+                <nav class="sidebar-nav">
+                    <ul id="sidebarnav">
+                        <li> <a class="waves-effect waves-dark" th:href="@{/}" aria-expanded="false"><i class="fa fa-home"></i><span class="hide-menu">Home</span></a></li>
+                        <li> <a class="waves-effect waves-dark" th:href="@{/admin/order}" aria-expanded="false"><i class="fa fa-table"></i><span class="hide-menu">Order Table</span></a></li>
+                        <li> <a class="waves-effect waves-dark" th:href="@{/admin/menu}" aria-expanded="false"><i class="fa fa-table"></i><span class="hide-menu"></span>Menu Tables</a></li>
+                    </ul>
+                </nav>
+                <!-- End Sidebar navigation -->
+            </div>
+            <!-- End Sidebar scroll-->
+        </aside>
+        <!-- ============================================================== -->
+        <!-- End Left Sidebar - style you can find in sidebar.scss  -->
+        <!-- ============================================================== -->
+        <!-- ============================================================== -->
+        <!-- Page wrapper  -->
+        <!-- ============================================================== -->
+        <div class="page-wrapper">
+            <!-- ============================================================== -->
+            <!-- Container fluid  -->
+            <!-- ============================================================== -->
+            <div class="container-fluid">
+                <!-- ============================================================== -->
+                <!-- Bread crumb and right sidebar toggle -->
+                <!-- ============================================================== -->
+                <div class="row page-titles">
+                    <div class="col-md-5 align-self-center">
+                        <h4 class="text-themecolor">Menu Table</h4>
+                    </div>
+                    <div class="col-md-7 align-self-center text-right">
+                        <div class="d-flex justify-content-end align-items-center">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
+                                <li class="breadcrumb-item active">Menu Table</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+                <!-- ============================================================== -->
+                <!-- End Bread crumb and right sidebar toggle -->
+                <!-- ============================================================== -->
+                <!-- Add menu form -->
+                <!-- ============================================================== -->
+                <div class="row">
+                    <div class="col-md-12 align-self-center text-right">
+                        <div class="d-flex justify-content-end align-items-center">
+                            <p style="padding-top: 15px;padding-right:30px;">Add New Item</p><a id="add"><i class="fa fa-plus"></i></a>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div id="popup" style="display: none;">
+                    <div class="content">
+                        <form class="login100-form" th:action="@{/admin/menu/add}" th:object="${item}" method="post" enctype="utf8">
+                            <fieldset>
+                                <label class="label-input100" for="title">Title</label>
+                                <input type="text" class="input100" name="title" id="title" placeholder="title" th:field="*{title}" required >
+                                <label class="label-input100" for="menu_type">Item Type</label>
+                                <select class="custom-select" name="menu_type" id="menu_type"  th:field="*{menuType}" required> 
+                                    <option value="" hidden>select type</option>
+                                    <option class="select-items" value="BREAKFAST">Breakfast</option>
+                                    <option class="select-items" value="LUNCH">Lunch</option>
+                                    <option class="select-items" value="DINNER">Dinner</option>
+                                    <option class="select-items" value="DESSERT">Dessert</option>
+                                    <option class="select-items" value="WINE_CARD">Wine</option>
+                                    <option class="select-items" value="DRINKS">Drinks</option>
+                                </select>
+                             <!--   <input type="text" class="input100" name="menu_type" id="menu_type" placeholder="menu_type" th:field="*{menuType}"> -->
+                                <label class="label-input100" for="description">Description</label>
+                                <input type="text" class="input100" name="description" id="description" placeholder="description" th:field="*{description}" required>
+                                <label class="label-input100" for="image_url">Image Url</label>
+                                <input type="text" class="input100" name="image_url" id="image_url" placeholder="image_url" th:field="*{imageUrl}" required>
+                                <label class="label-input100" for="price">Price</label>
+                                <input type="number" class="input100" name="price" id="price" placeholder="price" th:field="*{price}" min="1" required>
+                                <div class="container-login100-form-btn">
+                                    <div class="wrap-login100-form-btn">
+                                        <div class="login100-form-bgbtn"></div>
+                                        <button type="submit" class="login100-form-btn" id="create">Add item</button>
+                                    </div>
+                                    <div class="wrap-login100-form-btn">
+                                        <div class="login100-form-bgbtn"></div>
+                                        <button type="button" class="login100-form-btn" id="cancel">Cancel</button>
+                                    </div>
+                                </div>
+
+
+                            </fieldset>
+                        </form>
+
+
+
+                    </div>
+                    </div>
+                </div>
+
+
+
+                <!-- ============================================================== -->
+                <!-- Start Page Content -->
+                <!-- ============================================================== -->
+            <!-- Start breakfast table -->
+            <!-- ============================================================== -->
+                <div class="row">
+                    <!-- column -->
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">Breakfast Table</h4>
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>Title</th>
+                                                <th>Description</th>
+                                                <th>Price</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody th:each="breakfast : ${breakfasts}">
+                                            <tr>
+                                                <td th:text="${breakfast.title}"></td>
+                                                <td th:text="${breakfast.description}"></td>
+                                                <td th:text="${breakfast.price}"></td>
+                                                <td><a th:href="@{'/admin/menu/delete/'+${breakfast.id}}"><i class="fa fa-trash-o"></i></a> </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- ============================================================== -->
+            <!-- End breakfast table-->
+            <!-- ============================================================== -->
+            <!-- Start Lunch table -->
+            <!-- ============================================================== -->
+            <div class="row">
+                <!-- column -->
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">Lunch Table</h4>
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th>Title</th>
+                                        <th>Description</th>
+                                        <th>Price</th>
+                                        <th></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody th:each="lunch : ${lunches}">
+                                    <tr>
+                                        <td th:text="${lunch.title}"></td>
+                                        <td th:text="${lunch.description}"></td>
+                                        <td th:text="${lunch.price}"></td>
+                                        <td><a th:href="@{'/admin/menu/delete/'+${lunch.id}}"><i class="fa fa-trash-o"></i></a> </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- ============================================================== -->
+            <!-- End lunch table-->
+            <!-- ============================================================== -->
+            <!-- Start dinner table -->
+            <!-- ============================================================== -->
+            <div class="row">
+                <!-- column -->
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">Dinner Table</h4>
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th>Title</th>
+                                        <th>Description</th>
+                                        <th>Price</th>
+                                        <th></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody th:each="dinner : ${dinners}">
+                                    <tr>
+                                        <td th:text="${dinner.title}"></td>
+                                        <td th:text="${dinner.description}"></td>
+                                        <td th:text="${dinner.price}"></td>
+                                        <td><a th:href="@{'/admin/menu/delete/'+${dinner.id}}"><i class="fa fa-trash-o"></i></a> </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- ============================================================== -->
+            <!-- End dinner table-->
+            <!-- ============================================================== -->
+            <!-- Start drinks table -->
+            <!-- ============================================================== -->
+            <div class="row">
+                <!-- column -->
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">Drinks Table</h4>
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th>Title</th>
+                                        <th>Description</th>
+                                        <th>Price</th>
+                                        <th></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody th:each="drink : ${drinks}">
+                                    <tr>
+                                        <td th:text="${drink.title}"></td>
+                                        <td th:text="${drink.description}"></td>
+                                        <td th:text="${drink.price}"></td>
+                                        <td><a th:href="@{'/admin/menu/delete/'+${drink.id}}"><i class="fa fa-trash-o"></i></a> </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- ============================================================== -->
+            <!-- End drinks table-->
+            <!-- ============================================================== -->
+            <!-- Start dessert table -->
+            <!-- ============================================================== -->
+            <div class="row">
+                <!-- column -->
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">Dessert Table</h4>
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th>Title</th>
+                                        <th>Description</th>
+                                        <th>Price</th>
+                                        <th></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody th:each="dessert : ${desserts}">
+                                    <tr>
+                                        <td th:text="${dessert.title}"></td>
+                                        <td th:text="${dessert.description}"></td>
+                                        <td th:text="${dessert.price}"></td>
+                                        <td><a th:href="@{'/admin/menu/delete/'+${dessert.id}}"><i class="fa fa-trash-o"></i></a> </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- ============================================================== -->
+            <!-- End dessert table-->
+            <!-- ============================================================== -->
+            <!-- Start wine table -->
+            <!-- ============================================================== -->
+            <div class="row">
+                <!-- column -->
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">Wine Table</h4>
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th>Title</th>
+                                        <th>Description</th>
+                                        <th>Price</th>
+                                        <th></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody th:each="wine : ${wines}">
+                                    <tr>
+                                        <td th:text="${wine.title}"></td>
+                                        <td th:text="${wine.description}"></td>
+                                        <td th:text="${wine.price}"></td>
+                                        <td><a th:href="@{'/admin/menu/delete/'+${wine.id}}"><i class="fa fa-trash-o"></i></a> </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- ============================================================== -->
+            <!-- End wine table-->
+            <!-- ============================================================== -->
+                <!-- ============================================================== -->
+                <!-- End PAge Content -->
+                <!-- ============================================================== -->
+            </div>
+            <!-- ============================================================== -->
+            <!-- End Container fluid  -->
+            <!-- ============================================================== -->
+        </div>
+        <!-- ============================================================== -->
+        <!-- End Page wrapper  -->
+        <!-- ============================================================== -->
+        <!-- ============================================================== -->
+        <!-- footer -->
+        <!-- ============================================================== -->
+        <footer class="footer">
+            Made By Sadaf Khan
+        </footer>
+        <!-- ============================================================== -->
+        <!-- End footer -->
+        <!-- ============================================================== -->
+    </div>
+    <!-- ============================================================== -->
+    <!-- End Wrapper -->
+    <!-- ============================================================== -->
+    <!-- ============================================================== -->
+    <!-- All Jquery -->
+    <!-- ============================================================== -->
+    <script src="/assets/node_modules/jquery/jquery-3.2.1.min.js"></script>
+    <!-- Bootstrap tether Core JavaScript -->
+    <script src="/assets/node_modules/popper/popper.min.js"></script>
+    <script src="/assets/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- slimscrollbar scrollbar JavaScript -->
+    <script src="/dist/js/perfect-scrollbar.jquery.min.js"></script>
+    <!--Wave Effects -->
+    <script src="/dist/js/waves.js"></script>
+    <!--Menu sidebar -->
+    <script src="/dist/js/sidebarmenu.js"></script>
+    <!--stickey kit -->
+    <script src="/assets/node_modules/sticky-kit-master/dist/sticky-kit.min.js"></script>
+    <script src="/assets/node_modules/sparkline/jquery.sparkline.min.js"></script>
+    <!--Custom JavaScript -->
+    <script src="/dist/js/custom.min.js"></script>
+    <script src="/js/popup.js"></script>
+</body>
+
+</html>

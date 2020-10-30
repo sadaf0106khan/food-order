@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springseecurity5"
+      xmlns:background-image="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- Favicon icon -->
+    <title>Admin</title>
+    <!-- Custom CSS -->
+    <link href="/dist/css/style.css" rel="stylesheet">
+    <link href="/dist/css/popup.css" rel="stylesheet">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <!-- Pop-up form related stuff -->
+</head>
+
+<body class="skin-default-dark fixed-layout">
+<!-- ============================================================== -->
+<!-- Preloader - style you can find in spinners.css -->
+<!-- ============================================================== -->
+<div class="preloader">
+    <div class="loader">
+        <div class="loader__figure"></div>
+        <p class="loader__label">Elegant admin</p>
+    </div>
+</div>
+<!-- ============================================================== -->
+<!-- Main wrapper - style you can find in pages.scss -->
+<!-- ============================================================== -->
+<div id="main-wrapper">
+    <!-- ============================================================== -->
+    <!-- Topbar header - style you can find in pages.scss -->
+    <!-- ============================================================== -->
+    <header class="topbar">
+        <nav class="navbar top-navbar navbar-expand-md navbar-dark justify-content-between">
+            <!-- ============================================================== -->
+            <!-- Logo -->
+            <!-- ============================================================== -->
+            <div class="navbar-header">
+                <a class="navbar-brand text-dark" th:href="@{/}">
+                     <i class="fa fa-user-o mr-2"></i> Feliciano
+                </a>
+            </div>
+            <!-- ============================================================== -->
+            <!-- End Logo -->
+            <!-- ============================================================== -->
+            <ul class="navbar-nav my-lg-0">
+                <!-- ============================================================== -->
+                <!-- User profile and search -->
+                <!-- ============================================================== -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark" th:href="@{/logout}" >Logout<i class="fa fa-sign-out ml-2"></i></a>
+                </li>
+                <!-- ============================================================== -->
+                <!-- User profile and search -->
+                <!-- ============================================================== -->
+            </ul>
+        </nav>
+    </header>
+    <!-- ============================================================== -->
+    <!-- End Topbar header -->
+    <!-- ============================================================== -->
+    <!-- ============================================================== -->
+    <!-- Left Sidebar - style you can find in sidebar.scss  -->
+    <!-- ============================================================== -->
+    <aside class="left-sidebar">
+        <div class="d-flex no-block nav-text-box align-items-center">
+            <a class="waves-effect waves-dark ml-auto hidden-sm-down" href="javascript:void(0)"><i class="ti-menu"></i></a>
+            <a class="nav-toggler waves-effect waves-dark ml-auto hidden-sm-up" href="javascript:void(0)"><i class="ti-menu ti-close"></i></a>
+        </div>
+        <!-- Sidebar scroll-->
+        <div class="scroll-sidebar">
+            <!-- Sidebar navigation-->
+            <nav class="sidebar-nav">
+                <ul id="sidebarnav">
+                    <li> <a class="waves-effect waves-dark" th:href="@{/}" aria-expanded="false"><i class="fa fa-home"></i><span class="hide-menu">Home</span></a></li>
+                    <li> <a class="waves-effect waves-dark" th:href="@{/admin/order}" aria-expanded="false"><i class="fa fa-table"></i><span class="hide-menu">Order Table</span></a></li>
+                    <li> <a class="waves-effect waves-dark" th:href="@{/admin/menu}" aria-expanded="false"><i class="fa fa-table"></i><span class="hide-menu"></span>Menu Tables</a></li>
+                </ul>
+            </nav>
+            <!-- End Sidebar navigation -->
+        </div>
+        <!-- End Sidebar scroll-->
+    </aside>
+    <!-- ============================================================== -->
+    <!-- End Left Sidebar - style you can find in sidebar.scss  -->
+    <!-- ============================================================== -->
+    <!-- ============================================================== -->
+    <!-- Page wrapper  -->
+    <!-- ============================================================== -->
+    <div class="page-wrapper">
+        <!-- ============================================================== -->
+        <!-- Container fluid  -->
+        <!-- ============================================================== -->
+        <div class="container-fluid">
+            <!-- ============================================================== -->
+            <!-- Bread crumb and right sidebar toggle -->
+            <!-- ============================================================== -->
+            <div class="row page-titles">
+                <div class="col-md-5 align-self-center">
+                    <h4 class="text-themecolor">Order Table</h4>
+                </div>
+                <div class="col-md-7 align-self-center text-right">
+                    <div class="d-flex justify-content-end align-items-center">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
+                            <li class="breadcrumb-item active">Order Table</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+            <!-- ============================================================== -->
+            <!-- End Bread crumb and right sidebar toggle -->
+            <!-- ============================================================== -->
+            <!-- ============================================================== -->
+            <!-- Start Page Content -->
+            <!-- ============================================================== -->
+            <!-- active order -->
+            <div th:if="${order !=null}">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title" style="margin-bottom : 25px;">Order Details</h4>
+                            <a th:href="@{/admin/order}"><i class="fa fa-angle-down"></i></a>
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th>Title</th>
+                                        <th>Description</th>
+                                        <th>Quantity</th>
+                                        <th>Price</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody th:each="item : ${order.items}">
+                                    <tr>
+                                        <td th:text="${item.menuItem.title}"></td>
+                                        <td th:text="${item.menuItem.description}"></td>
+                                        <td th:text="${item.quantity}"></td>
+                                        <td th:text="${item.menuItem.price*item.quantity}"></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <h4 class="card-title">Bill</h4>
+                            <div class="table-responsive">
+                                <table class="table" th:object="${order}">
+
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td>Item total</td>
+                                        <td>[[${order.itemTotal}]]</td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td>Service Tax</td>
+                                        <td>[[${order.itemTotal*0.12}]]</td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td>Delivery Charge</td>
+                                        <td>20</td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td>Bill total</td>
+                                        <td>[[${order.itemTotal*1.12+20}]]</td>
+                                        <td></td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div th:if="${order.delivered}">
+                                <span th:text="'Delivered At:' + ${order.deliverDate}"></span>
+                            </div>
+                            <div th:unless="${order.delivered}">
+                                <span>Mark as delivered</span>
+                                <a th:href="@{/admin/order/deliver(orderId=${order.id})}"><i class="fa fa-square-o"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- past order -->
+
+            <h4 style="padding-left:25px;">Orders</h4>
+            <div th:if="${!orders.isEmpty()}">
+                <div th:each="order: ${orders}">
+                    <div class="col-12">
+                        <div class="card" style="margin-bottom: 10px;">
+                            <div class="card-body">
+                                <div th:each="item : ${order.items}">
+                                    <span th:text="${item.menuItem.title} + '*' +${item.quantity} + '  '"></span>
+                                </div>
+                                <hr/>
+                                <div>
+                                    <span th:text="${order.bill} + ' RS '"></span>
+                                    <span>[[${order.orderDate}]]</span>
+                                    <span><a th:href="@{/admin/order/details(orderId=${order.id})}"><i class="fa fa-angle-right"></i></a></span>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div th:unless="${!orders.isEmpty()}">No Past Orders</div>
+
+        <!-- ============================================================== -->
+        <!-- End PAge Content -->
+        <!-- ============================================================== -->
+    </div>
+    <!-- ============================================================== -->
+    <!-- End Container fluid  -->
+    <!-- ============================================================== -->
+</div>
+<!-- ============================================================== -->
+<!-- End Page wrapper  -->
+<!-- ============================================================== -->
+<!-- ============================================================== -->
+<!-- footer -->
+<!-- ============================================================== -->
+<footer class="footer">
+    Made By Sadaf Khan
+</footer>
+<!-- ============================================================== -->
+<!-- End footer -->
+<!-- ============================================================== -->
+</div>
+<!-- ============================================================== -->
+<!-- End Wrapper -->
+<!-- ============================================================== -->
+<!-- ============================================================== -->
+<!-- All Jquery -->
+<!-- ============================================================== -->
+<script src="/assets/node_modules/jquery/jquery-3.2.1.min.js"></script>
+<!-- Bootstrap tether Core JavaScript -->
+<script src="/assets/node_modules/popper/popper.min.js"></script>
+<script src="/assets/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+<!-- slimscrollbar scrollbar JavaScript -->
+<script src="/dist/js/perfect-scrollbar.jquery.min.js"></script>
+<!--Wave Effects -->
+<script src="/dist/js/waves.js"></script>
+<!--Menu sidebar -->
+<script src="/dist/js/sidebarmenu.js"></script>
+<!--stickey kit -->
+<script src="/assets/node_modules/sticky-kit-master/dist/sticky-kit.min.js"></script>
+<script src="/assets/node_modules/sparkline/jquery.sparkline.min.js"></script>
+<!--Custom JavaScript -->
+<script src="/dist/js/custom.min.js"></script>
+<script src="/js/popup.js"></script>
+</body>
+
+</html>
